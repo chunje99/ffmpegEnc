@@ -29,9 +29,10 @@ int main(int argc, char*argv[]){
     else
         options = " -s 1280x720 -b:v 2M -b:a 256k ";
 
-    std::string cmd = "ffmpeg -strict -2 -v verbose -y -i ";
+    std::string cmd = "ffmpeg -v verbose -y -i ";
     cmd += srcFile;
     cmd += options;
+    cmd += " -strict -2 ";
     cmd += outFile;
     cmd += " 2>&1";
     FILE* fp = popen(cmd.c_str(), "r");
