@@ -70,6 +70,7 @@ int main(int argc, char*argv[]){
                 sscanf((char*)pro.data(), "%02d:%02d:%02d.%02d", &h, &m, &s, &ms);
                 process = s + m*60 +  h*60*60;
                 of << process*100/duration << std::endl;
+                std::cout << process*100/duration << std::endl;
            }
             lineStr = "";
         } else {
