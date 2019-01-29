@@ -12,3 +12,12 @@ sudo rpm -Uvh http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release
 
 sudo yum install ffmpeg ffmpeg-devel -y
 ```
+## ffmpegEnc 설치
+```shell
+git clone https://github.com/chunje99/ffmpegEnc
+cd ffmpegEnc
+autoreconf -i
+./configure
+make
+sudo make install
+```
