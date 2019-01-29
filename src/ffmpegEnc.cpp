@@ -79,6 +79,7 @@ int main(int argc, char*argv[]){
 
     }
     of << 100 << std::endl;
+    std::cout << 100 << std::endl;
     of.close();
     pclose(fp);
     return 0;
