@@ -21,3 +21,10 @@ autoreconf -i
 make
 sudo make install
 ```
+## 사용방법
+```shell
+Usage: ffmpegEnc srcfile outfile preset
+preset : FHD (1920x1080, 4M)
+         HD (1280x720, 2M)
+         SD (720x480, 1M)
+```
