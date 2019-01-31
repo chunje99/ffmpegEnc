@@ -12,15 +12,12 @@ void Usage(){
 }
 
 int main(int argc, char*argv[]){
-    if(argc != 5)
+    if(argc != 4)
         Usage();
 
     std::string srcFile = argv[1];
     std::string outFile = argv[2];
     std::string preset = argv[3];
-    int thumbnail_time = atoi(argv[4]);
-    if(thumbnail_time < 0)
-        thumbnail_time = 0;
     std::string options;
     std::string processFile = outFile + ".process";
     if(preset == "FHD")
@@ -57,11 +54,6 @@ int main(int argc, char*argv[]){
     int duration, process;
     size_t pos;
     int h,m,s,ms;
-//      Duration: 00:01:22.50, start: 0.000000, bitrate: 434 kb/s
-//    Stream #0:0(und): Video: h264 (Constrained Baseline) (avc1 / 0x31637661), yuv420p, 640x358, 335 kb/s, 25 fps, 25 tbr, 50 tbn, 50 tbc (default)
-//    Metadata:
-//      handler_name    : VideoHandler
-//    Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 44100 Hz, stereo, fltp, 95 kb/s (default)
 
     while(1){
         t = fgetc(fp);
