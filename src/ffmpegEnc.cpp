@@ -4,20 +4,23 @@
 #define BUFF_SIZE 128
 
 void Usage(){
-    std::cout << "Usage: ffmpegEnc srcfile outfile preset" << std::endl;
-    std::cout << "preset : FHD (1920x1080, 4M)" << std::endl;
-    std::cout << "         HD (1280x720, 2M)" << std::endl;
-    std::cout << "         SD (720x480, 1M)" << std::endl;
+    std::cout << "Usage             :   ffmpegEnc srcfile outfile preset" << std::endl;
+    std::cout << "preset            :   FHD (1920x1080, 4M)" << std::endl;
+    std::cout << "                      HD (1280x720, 2M)" << std::endl;
+    std::cout << "                      SD (720x480, 1M)" << std::endl;
     exit(0);
 }
 
 int main(int argc, char*argv[]){
-    if(argc != 4)
+    if(argc != 5)
         Usage();
 
     std::string srcFile = argv[1];
     std::string outFile = argv[2];
     std::string preset = argv[3];
+    int thumbnail_time = atoi(argv[4]);
+    if(thumbnail_time < 0)
+        thumbnail_time = 0;
     std::string options;
     std::string processFile = outFile + ".process";
     if(preset == "FHD")
