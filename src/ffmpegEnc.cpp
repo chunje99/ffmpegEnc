@@ -54,6 +54,12 @@ int main(int argc, char*argv[]){
     int duration, process;
     size_t pos;
     int h,m,s,ms;
+//      Duration: 00:01:22.50, start: 0.000000, bitrate: 434 kb/s
+//    Stream #0:0(und): Video: h264 (Constrained Baseline) (avc1 / 0x31637661), yuv420p, 640x358, 335 kb/s, 25 fps, 25 tbr, 50 tbn, 50 tbc (default)
+//    Metadata:
+//      handler_name    : VideoHandler
+//    Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 44100 Hz, stereo, fltp, 95 kb/s (default)
+
     while(1){
         t = fgetc(fp);
         if(t == EOF) break;
@@ -63,6 +69,8 @@ int main(int argc, char*argv[]){
                 std::string du = lineStr.substr(pos+10,11);
                 sscanf((char*)du.data(), "%02d:%02d:%02d.%02d", &h, &m, &s, &ms);
                 duration = s + m*60 +  h*60*60;
+                of << "{\"Duration\": " << duration << "}" << std::endl;
+                std::cout << "{\"Duration\": " << duration << "}" << std::endl;
             } else if((pos = lineStr.find("time=")) != std::string::npos){
                 if(duration == 0) continue;
                 std::string pro = lineStr.substr(pos+5,11);
