@@ -31,7 +31,8 @@ preset : FHD (1920x1080, 4M)
  process파일은 outfile.process에 작업상황 표시, 마지막 line 이 최종 progress
  ```
  ex) 
- 0
+{"Duration": 82}
+0
 2
 4
 9
