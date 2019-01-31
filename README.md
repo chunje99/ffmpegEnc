@@ -22,6 +22,7 @@ make
 sudo make install
 ```
 ## 사용방법
+### 인코딩
 ```shell
 Usage: ffmpegEnc srcfile outfile preset
 preset : FHD (1920x1080, 4M)
@@ -51,4 +52,9 @@ preset : FHD (1920x1080, 4M)
 97
 100
 100
+```
+###  썸네일 추출
+```shell
+Usage             :   ffmpegThumb srcfile outfile thumbnail_time
+thumbnail_time    :   전체 시간의 퍼센트 (0~100)
 ```
