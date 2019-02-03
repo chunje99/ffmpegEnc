@@ -4,13 +4,10 @@ ffmpegEnc
 ## ffmpeg 설치
 
 ```shell
-sudo yum install epel-release -y
-
-sudo rpm --import http://li.nux.ro/download/nux/RPM-GPG-KEY-nux.ro
-
-sudo rpm -Uvh http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-5.el7.nux.noarch.rpm
-
-sudo yum install ffmpeg ffmpeg-devel -y
+$ sudo yum install epel-release -y
+$ sudo rpm --import http://li.nux.ro/download/nux/RPM-GPG-KEY-nux.ro
+$ sudo rpm -Uvh http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-5.el7.nux.noarch.rpm
+$ sudo yum install ffmpeg ffmpeg-devel -y
 ```
 ## PHP-CPP 설치  (php extention 라이브러리로 사용할때 필요)
 참조 : http://www.php-cpp.com/documentation/install
@@ -23,12 +20,12 @@ $ sudo make install
 
 # ffmpegEnc 설치
 ```shell
-git clone https://github.com/chunje99/ffmpegEnc
-cd ffmpegEnc
-autoreconf -i
-./configure
-make
-sudo make install
+$ git clone https://github.com/chunje99/ffmpegEnc
+$ cd ffmpegEnc
+$ autoreconf -i
+$ ./configure
+$ make
+$ sudo make install
 ```
 ## 사용방법
 ### 인코딩
