@@ -12,7 +12,16 @@ sudo rpm -Uvh http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release
 
 sudo yum install ffmpeg ffmpeg-devel -y
 ```
-## ffmpegEnc 설치
+## PHP-CPP 설치  (php extention 라이브러리로 사용할때 필요)
+참조 : http://www.php-cpp.com/documentation/install
+```shell
+$ git clone https://github.com/CopernicaMarketingSoftware/PHP-CPP.git
+$ cd PHP-CPP
+$ make
+$ sudo make install
+```
+
+# ffmpegEnc 설치
 ```shell
 git clone https://github.com/chunje99/ffmpegEnc
 cd ffmpegEnc
