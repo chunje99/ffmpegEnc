@@ -6,6 +6,7 @@
 #include <vector>
 #include <fstream>
 
+#define BUFF_SIZE 128
 
 /**
  *  Counter class that can be used for counting
@@ -23,25 +24,36 @@ class Fenc
         std::string m_options;
         int m_progress;
         int m_jobcnt;
-        std::thread m_threads[10];
+        int m_ttime;
+        int m_thumbnail_time;
+        std::vector<std::thread> m_threadss;
+        //std::thread m_threads[10];
+        //std::thread m_threads;
 
     public:
         /**
          *  C++ constructor and destructor
          */
-        Fenc() = default;
-        virtual ~Fenc() = default;
+        Fenc();
+        ~Fenc();
 
-        void setSource(std::string src);
+        virtual void setSource(std::string src);
         std::string getSource();
-        void setTarget(std::string target);
+        virtual void setTarget(std::string target);
         std::string getTarget();
-        void setPreset(std::string preset);
+        virtual void setPreset(std::string preset);
         std::string getPreset();
         int getProgress();
-        void StartEncode();
+        virtual void setThumbnailTime(int thumbnail_time);
+        int getThumbnailTime();
+
+        virtual void StartEncode();
+        virtual void StartThumbnail();
+        virtual void Wait();
+
+    private:
         void Encode();
-        void Wait();
-        void Print();
+        void Thumbnail();
+        int GetThumbnail(int ttime);
 };
 #endif

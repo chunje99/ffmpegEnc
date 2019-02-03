@@ -1,60 +1,51 @@
-#ifndef FENC_H
-#define FENC_H
+#ifndef PHPFENC_H
+#define PHPFENC_H
 
 #include <iostream>
 #include <thread>
 #include <phpcpp.h>
 #include <vector>
 #include <fstream>
+#include "fenc.h"
 
 
-//namespace marco
-//{
-    /**
-     *  Counter class that can be used for counting
-     */
-class Fenc: public Php::Base
+/**
+ *  Counter class that can be used for counting
+ */
+class PHPFenc: public Fenc, public Php::Base
 {
     private:
-        /**
-         *  The initial value
-         *  @var    int
-         */
-        std::string m_srcFile;
-        std::string m_outFile;
-        std::string m_preset;
-        std::string m_options;
-        int m_progress;
-        int m_jobcnt;
-        std::thread m_threads[10];
 
     public:
-        /**
-         *  C++ constructor and destructor
-         */
-        Fenc() = default;
-        virtual ~Fenc() = default;
+        PHPFenc() = default;
+        PHPFenc(PHPFenc const&) = delete;
+        virtual ~PHPFenc() = default;
 
-        void setSource(Php::Parameters &params);
-        void setSource(std::string src);
+        virtual void setSource(Php::Parameters &params);
         Php::Value getSource();
-        void setTarget(Php::Parameters &params);
-        void setTarget(std::string target);
+
+        virtual void setTarget(Php::Parameters &params);
         Php::Value getTarget();
-        void setPreset(Php::Parameters &params);
-        void setPreset(std::string preset);
+
+        virtual void setPreset(Php::Parameters &params);
         Php::Value getPreset();
+
+        virtual void setThumbnailTime(Php::Parameters &params);
+        Php::Value getThumbnailTime();
+
         Php::Value getProgress();
-        void StartEncode();
-        void Encode();
-        void Wait();
-        void Print();
+
+        virtual void StartEncode();
+        virtual void StartThumbnail();
+        //void Encode();
+        virtual void Wait();
+        //void Print();
 
 };
-    /**
-     *  Switch to C context to ensure that the get_module() function
-     *  is callable by C programs (which the Zend engine is)
-     */
+/**
+ *  Switch to C context to ensure that the get_module() function
+ *  is callable by C programs (which the Zend engine is)
+ */
 extern "C" {
     /**
      *  Startup function that is called by the Zend engine 
@@ -66,17 +57,19 @@ extern "C" {
         static Php::Extension myExtension("my_extension", "1.0");
 
         // description of the class so that PHP knows which methods are accessible
-        Php::Class<Fenc> fenc("Fenc");
-        fenc.method<&Fenc::setSource>     ("setSource",{ Php::ByVal("src", Php::Type::String)});
-        fenc.method<&Fenc::getSource>     ("getSource");
-        fenc.method<&Fenc::setTarget>     ("setTarget",{ Php::ByVal("tar", Php::Type::String)});
-        fenc.method<&Fenc::getTarget>     ("getTarget");
-        fenc.method<&Fenc::setPreset>     ("setPreset",{ Php::ByVal("preset", Php::Type::String)});
-        fenc.method<&Fenc::getPreset>     ("getPreset");
-        fenc.method<&Fenc::getProgress>   ("getProgress");
-        fenc.method<&Fenc::Encode>        ("Encode");
-        fenc.method<&Fenc::StartEncode>   ("StartEncode");
-        fenc.method<&Fenc::Wait>          ("Wait");
+        Php::Class<PHPFenc> fenc("PHPFenc");
+        fenc.method<&PHPFenc::setSource>     ("setSource",{ Php::ByVal("src", Php::Type::String)});
+        fenc.method<&PHPFenc::getSource>     ("getSource");
+        fenc.method<&PHPFenc::setTarget>     ("setTarget",{ Php::ByVal("tar", Php::Type::String)});
+        fenc.method<&PHPFenc::getTarget>     ("getTarget");
+        fenc.method<&PHPFenc::setPreset>     ("setPreset",{ Php::ByVal("preset", Php::Type::String)});
+        fenc.method<&PHPFenc::getPreset>     ("getPreset");
+        fenc.method<&PHPFenc::setThumbnailTime>     ("setThumbnailTime",{ Php::ByVal("ttime", Php::Type::Numeric)});
+        fenc.method<&PHPFenc::getThumbnailTime>     ("getThumbnailTime");
+        fenc.method<&PHPFenc::getProgress>   ("getProgress");
+        fenc.method<&PHPFenc::StartEncode>   ("StartEncode");
+        fenc.method<&PHPFenc::StartThumbnail>   ("StartThumbnail");
+        fenc.method<&PHPFenc::Wait>          ("Wait");
 
         // add the class to the extension
         myExtension.add(std::move(fenc));
@@ -85,5 +78,4 @@ extern "C" {
         return myExtension;
     }
 }
-//}
 #endif

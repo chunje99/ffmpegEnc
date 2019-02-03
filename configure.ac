@@ -13,14 +13,20 @@ AC_CONFIG_MACRO_DIRS([m4])
 LT_INIT
 AC_PROG_CC
 AC_PROG_CXX
-#AC_PROG_RANLIB
+AC_PROG_RANLIB
 AC_PROG_LIBTOOL
 
 # Checking for warning flags on the compiler
 CXXFLAGS="$CXXFLAGS -std=c++11"
 # Checks for libraries.
-
-
+AC_CHECK_LIB([phpcpp], [main], [
+              AC_MSG_NOTICE([libphpcpp OK])
+              phpcpp=true
+              ], [
+              AC_MSG_NOTICE([unable to find libphpcpp])
+              phpcpp=false
+              ] )
+AM_CONDITIONAL([LIB_PHPCPP], [test "x$phpcpp" = "xtrue"])
 # Checks for header files.
 
 # Checks for typedefs, structures, and compiler characteristics.
