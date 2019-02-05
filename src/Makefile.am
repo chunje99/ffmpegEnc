@@ -1,4 +1,6 @@
 bin_PROGRAMS = ffmpegEnc ffmpegThumb
+lib_LIBRARIES =
+lib_LTLIBRARIES =
 
 fencSOURCE = fenc.cpp
 fencSOURCE += fenc.h
@@ -12,8 +14,8 @@ ffmpegThumb_SOURCES += ${fencSOURCE}
 ffmpegThumb_LDADD = -lpthread
 
 if LIB_PHPCPP
-lib_LIBRARIES = libphpfenc.a
-lib_LTLIBRARIES = libphpfenc.la
+lib_LIBRARIES += libphpfenc.a
+lib_LTLIBRARIES += libphpfenc.la
 
 libphpfenc_a_SOURCES = ${fencSOURCE}
 libphpfenc_a_SOURCES += phpfenc.cpp
@@ -36,3 +38,25 @@ libphpfenc_la_CXXFLAGS = ${AM_CXXFLAGS}
 libphpfenc_la_CXXFLAGS += -IPHP-CPP
 libphpfenc_la_LIBADD = -lphpcpp -lpthread
 endif
+
+#lib_python
+lib_LIBRARIES += libpythonfenc.a
+lib_LTLIBRARIES += libpythonfenc.la
+
+libpythonfenc_a_SOURCES = ${fencSOURCE}
+libpythonfenc_a_SOURCES += pythonfenc.cpp
+libpythonfenc_a_SOURCES += pythonfenc.h
+
+libpythonfenc_a_CFLAGS = ${AM_CFLAGS}
+libpythonfenc_a_CXXFLAGS = ${AM_CXXFLAGS}
+libpythonfenc_a_CXXFLAGS += -lpthread
+
+libpythonfenc_la_SOURCES = ${fencSOURCE}
+libpythonfenc_la_SOURCES += pythonfenc.cpp
+libpythonfenc_la_SOURCES += pythonfenc.h
+
+libpythonfenc_la_CFLAGS = ${AM_CFLAGS}
+libpythonfenc_la_CXXFLAGS = ${AM_CXXFLAGS}
+libpythonfenc_la_CXXFLAGS += -shared
+libpythonfenc_la_CXXFLAGS += -fPIC
+libpythonfenc_la_LIBADD = -lpthread
