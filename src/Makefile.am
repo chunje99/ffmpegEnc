@@ -61,12 +61,13 @@ libpythonfenc_la_CXXFLAGS += -shared
 libpythonfenc_la_CXXFLAGS += -fPIC
 libpythonfenc_la_LIBADD = -lpthread
 
+if LIB_JNI
 #lib_jni
 lib_LIBRARIES += libjnifenc.a
 lib_LTLIBRARIES += libjnifenc.la
 
-JAVA_HOME = /usr/lib/jvm/java-8-openjdk-amd64
-
+#define in configure.ac
+JAVA_HOME=@JNI_LOC@
 
 libjnifenc_a_SOURCES = ${fencSOURCE}
 libjnifenc_a_SOURCES += jnifenc.cpp
@@ -89,3 +90,4 @@ libjnifenc_la_CXXFLAGS += -shared
 libjnifenc_la_CXXFLAGS += -I${JAVA_HOME}/include -I${JAVA_HOME}/include/linux
 libjnifenc_la_CXXFLAGS += -fPIC
 libjnifenc_la_LIBADD = -lpthread
+endif

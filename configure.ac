@@ -19,6 +19,7 @@ AC_PROG_LIBTOOL
 # Checking for warning flags on the compiler
 CXXFLAGS="$CXXFLAGS -std=c++11"
 # Checks for libraries.
+# check PHP-CPP
 AC_CHECK_LIB([phpcpp], [main], [
               AC_MSG_NOTICE([libphpcpp OK])
               phpcpp=true
@@ -28,6 +29,16 @@ AC_CHECK_LIB([phpcpp], [main], [
               ] )
 AM_CONDITIONAL([LIB_PHPCPP], [test "x$phpcpp" = "xtrue"])
 # Checks for header files.
+# check jni.h
+AC_CHECK_FILE(["/usr/lib/jvm/default-java/include/jni.h"], [
+              AC_MSG_NOTICE([jni.h OK])
+              jni=true
+              AC_SUBST(JNI_LOC, "/usr/lib/jvm/default-java")
+              ], [
+              AC_MSG_NOTICE([unable to find jni.h])
+              jni=false
+              ] )
+AM_CONDITIONAL([LIB_JNI], [test "x$jni" = "xtrue"])
 
 # Checks for typedefs, structures, and compiler characteristics.
 
