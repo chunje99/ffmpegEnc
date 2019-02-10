@@ -60,3 +60,32 @@ libpythonfenc_la_CXXFLAGS = ${AM_CXXFLAGS}
 libpythonfenc_la_CXXFLAGS += -shared
 libpythonfenc_la_CXXFLAGS += -fPIC
 libpythonfenc_la_LIBADD = -lpthread
+
+#lib_jni
+lib_LIBRARIES += libjnifenc.a
+lib_LTLIBRARIES += libjnifenc.la
+
+JAVA_HOME = /usr/lib/jvm/java-8-openjdk-amd64
+
+
+libjnifenc_a_SOURCES = ${fencSOURCE}
+libjnifenc_a_SOURCES += jnifenc.cpp
+libjnifenc_a_SOURCES += jnifenc.h
+libjnifenc_a_SOURCES += JNITest.h
+
+libjnifenc_a_CFLAGS = ${AM_CFLAGS}
+libjnifenc_a_CXXFLAGS = ${AM_CXXFLAGS}
+libjnifenc_a_CXXFLAGS += -lpthread
+libjnifenc_a_CXXFLAGS += -I${JAVA_HOME}/include -I${JAVA_HOME}/include/linux
+
+libjnifenc_la_SOURCES = ${fencSOURCE}
+libjnifenc_la_SOURCES += jnifenc.cpp
+libjnifenc_la_SOURCES += jnifenc.h
+libjnifenc_la_SOURCES += JNITest.h
+
+libjnifenc_la_CFLAGS = ${AM_CFLAGS}
+libjnifenc_la_CXXFLAGS = ${AM_CXXFLAGS}
+libjnifenc_la_CXXFLAGS += -shared
+libjnifenc_la_CXXFLAGS += -I${JAVA_HOME}/include -I${JAVA_HOME}/include/linux
+libjnifenc_la_CXXFLAGS += -fPIC
+libjnifenc_la_LIBADD = -lpthread
