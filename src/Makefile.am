@@ -77,7 +77,7 @@ libjnifenc_a_SOURCES += JNITest.h
 libjnifenc_a_CFLAGS = ${AM_CFLAGS}
 libjnifenc_a_CXXFLAGS = ${AM_CXXFLAGS}
 libjnifenc_a_CXXFLAGS += -lpthread
-libjnifenc_a_CXXFLAGS += -I${JAVA_HOME}/include -I${JAVA_HOME}/include/linux
+libjnifenc_a_CXXFLAGS += -I@JNI_LOC@ -I@JNI_LOC_SUB@
 
 libjnifenc_la_SOURCES = ${fencSOURCE}
 libjnifenc_la_SOURCES += jnifenc.cpp
@@ -87,7 +87,7 @@ libjnifenc_la_SOURCES += JNITest.h
 libjnifenc_la_CFLAGS = ${AM_CFLAGS}
 libjnifenc_la_CXXFLAGS = ${AM_CXXFLAGS}
 libjnifenc_la_CXXFLAGS += -shared
-libjnifenc_la_CXXFLAGS += -I${JAVA_HOME}/include -I${JAVA_HOME}/include/linux
+libjnifenc_la_CXXFLAGS += -I@JNI_LOC@ -I@JNI_LOC_SUB@
 libjnifenc_la_CXXFLAGS += -fPIC
 libjnifenc_la_LIBADD = -lpthread
 endif
