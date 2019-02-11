@@ -35,7 +35,7 @@ class Fenc
          *  C++ constructor and destructor
          */
         Fenc();
-        ~Fenc();
+        virtual ~Fenc();
 
         virtual void setSource(std::string src);
         std::string getSource();
