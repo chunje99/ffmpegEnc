@@ -21,24 +21,24 @@ class PHPFenc: public Fenc, public Php::Base
         PHPFenc(PHPFenc const&) = delete;
         virtual ~PHPFenc() = default;
 
-        virtual void setSource(Php::Parameters &params);
+        void setSource(Php::Parameters &params);
         Php::Value getSource();
 
-        virtual void setTarget(Php::Parameters &params);
+        void setTarget(Php::Parameters &params);
         Php::Value getTarget();
 
-        virtual void setPreset(Php::Parameters &params);
+        void setPreset(Php::Parameters &params);
         Php::Value getPreset();
 
-        virtual void setThumbnailTime(Php::Parameters &params);
+        void setThumbnailTime(Php::Parameters &params);
         Php::Value getThumbnailTime();
 
         Php::Value getProgress();
 
-        virtual void StartEncode();
-        virtual void StartThumbnail();
+        void StartEncode();
+        void StartThumbnail();
         //void Encode();
-        virtual void Wait();
+        void Wait();
         //void Print();
 
 };
