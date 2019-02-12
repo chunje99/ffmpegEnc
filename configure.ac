@@ -59,18 +59,21 @@ AM_CONDITIONAL([LIB_PHPCPP], [test "x$phpcpp" = "xtrue"])
 # Checks for header files.
 # check jni.h
 jni=false
-AC_CHECK_FILE(["/usr/lib/jvm/default-java/include/jni.h"], [
-              AC_MSG_NOTICE([jni.h OK])
-              jni=true
-              AC_SUBST(JNI_LOC, "/usr/lib/jvm/default-java/include")
-              AC_SUBST(JNI_LOC_SUB, "/usr/lib/jvm/default-java/include/linux")
-              ], [
-                  AC_CHECK_FILE(["/Library/Java/JavaVirtualMachines/openjdk-11.0.2.jdk/Contents/Home/include/jni.h"], [
-              AC_MSG_NOTICE([Mac jni.h OK])
-             jni=true
-             AC_SUBST(JNI_LOC, "/Library/Java/JavaVirtualMachines/openjdk-11.0.2.jdk/Contents/Home/include")
-             AC_SUBST(JNI_LOC_SUB, "/Library/Java/JavaVirtualMachines/openjdk-11.0.2.jdk/Contents/Home/include/darwin") ], [
-             AC_MSG_NOTICE([unable to find jni.h])] ) ] )
+JAVAHOME="/usr/java/default"
+#JAVAHOME="/usr/lib/jvm/default-java"
+AC_CHECK_FILE(["${JAVAHOME}/include/jni.h"], [
+               AC_MSG_NOTICE([jni.h OK])
+               jni=true
+               AC_SUBST(JNI_LOC, "${JAVAHOME}/include")
+               AC_SUBST(JNI_LOC_SUB, "${JAVAHOME}/include/linux")
+               ], [
+                   JAVAHOME="/Library/Java/JavaVirtualMachines/openjdk-11.0.2.jdk/Contents/Home"
+                   AC_CHECK_FILE(["${JAVAHOME}/include/jni.h"], [
+                                  AC_MSG_NOTICE([Mac jni.h OK])
+                                  jni=true
+                                  AC_SUBST(JNI_LOC, "${JAVAHOME}/include")
+                                  AC_SUBST(JNI_LOC_SUB, "${JAVAHOME}/include/darwin") ], [
+                                                                                          AC_MSG_NOTICE([unable to find jni.h])] ) ] )
 
 AM_CONDITIONAL([LIB_JNI], [test "x$jni" = "xtrue"])
 

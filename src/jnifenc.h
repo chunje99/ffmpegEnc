@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <thread>
-#include <phpcpp.h>
 #include <vector>
 #include <fstream>
 #include "fenc.h"
