@@ -144,7 +144,7 @@ void Fenc::Encode(){
         m_options = " -s 1280x720 -b:v 2M -b:a 256k ";
     */
     m_options = " -s " + m_ratio;
-    m_options += " -b " + m_bitRate;
+    m_options += " -b:v " + m_bitRate;
     if(m_mute){
         m_options += " -an ";
     } else{
@@ -152,7 +152,7 @@ void Fenc::Encode(){
         m_options += " -ac " + std::to_string(m_channel);
     }
 
-    std::string cmd = "ffmpeg -strict -2 -v verbose -y -i ";
+    std::string cmd = "ffmpeg -v verbose -y -i ";
     cmd += m_srcFile + " ";
     if(m_logo != "") {
         if(m_logoLocation == "TR")
@@ -160,7 +160,7 @@ void Fenc::Encode(){
         else ///center
             cmd += " -i " + m_logo + " -filter_complex \"overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2\" ";
     }
-    cmd += m_options + " ";
+    cmd += m_options + " -strict -2 ";
     cmd += m_outFile;
     cmd += " 2>&1";
     std::cout << cmd << std::endl;
