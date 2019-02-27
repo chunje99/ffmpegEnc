@@ -30,14 +30,20 @@ $ sudo make install
 ## 사용방법
 ### 인코딩
 ```shell
-Usage: ffmpegEnc srcfile outfile preset
-preset : FHD (1920x1080, 4M)
-         HD (1280x720, 2M)
-         SD (720x480, 1M)
+Usage     :   ffmpegEnc [options] sourcefile outfile
+options   :
+  -r  : 화면 비율 [ 854x480 , 1280x720, 1920x1080 ] (1280x720)
+  -b  : 비트레이트 [ 1000K, 2000K, 4000K ] (2000K)
+  -s  : 샘플레이트 [ 44100, 48000 ] (44100)
+  -c  : 모노/스테레오 [ 1, 2 ] (2)
+  -m  : 음소거 (0)
+  -l  : 로고  [ path ] ()
+  -L  : 로고 위치 [ C (center), TR (top right)] (C)
+  -h  : help
 ```
  process파일은 outfile.process에 작업상황 표시, 마지막 line 이 최종 progress
  ```
- ex) 
+ ex) ./ffmpegEnc -r 1280x720 -b 1000K -l ~/다운로드/temp_1551245232624.-959209158.png -L C ~/다운로드/SampleVideo_1280x720_20mb.mp4 out.mp4
 {"Duration": 82}
 0
 2
@@ -59,7 +65,14 @@ preset : FHD (1920x1080, 4M)
 100
 100
 ```
-###  썸네일 추출
+###  초당 썸네일 추출
+```shell
+Usage     :   ffmpegThumbAll srcfile outfile
+outfile   :   path/name%d.jpeg ( name1.jpeg, name2.jpeg... )
+```
+outfile이름이 중요.. %d가 있어야 초값이 들어감
+
+###  특정 썸네일 추출
 ```shell
 Usage             :   ffmpegThumb srcfile outfile thumbnail_time
 thumbnail_time    :   전체 시간의 퍼센트 (0~100)
