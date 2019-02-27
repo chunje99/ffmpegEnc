@@ -38,6 +38,8 @@ case "${host_os}" in
         AC_MSG_ERROR(["OS $host_os is not supported"])
         ;;
 esac
+AC_MSG_NOTICE([${host_os}])
+AC_MSG_NOTICE([${host}])
 
 # Pass the conditionals to automake
 AM_CONDITIONAL([LINUX], [test "$build_linux" = "yes"])
@@ -59,22 +61,38 @@ AM_CONDITIONAL([LIB_PHPCPP], [test "x$phpcpp" = "xtrue"])
 # Checks for header files.
 # check jni.h
 jni=false
-JAVAHOME="/usr/java/default"
-#JAVAHOME="/usr/lib/jvm/default-java"
+#JAVAHOME="/usr/java/default"
+##JAVAHOME="/usr/lib/jvm/default-java"
+#AC_CHECK_FILE(["${JAVAHOME}/include/jni.h"], [
+#               AC_MSG_NOTICE([jni.h OK])
+#               jni=true
+#               AC_SUBST(JNI_LOC, "${JAVAHOME}/include")
+#               AC_SUBST(JNI_LOC_SUB, "${JAVAHOME}/include/linux")
+#               ], [
+#                   JAVAHOME="/Library/Java/JavaVirtualMachines/openjdk-11.0.2.jdk/Contents/Home"
+#                   AC_CHECK_FILE(["${JAVAHOME}/include/jni.h"], [
+#                                  AC_MSG_NOTICE([Mac jni.h OK])
+#                                  jni=true
+#                                  AC_SUBST(JNI_LOC, "${JAVAHOME}/include")
+#                                  AC_SUBST(JNI_LOC_SUB, "${JAVAHOME}/include/darwin") ], [
+#                                                                                          AC_MSG_NOTICE([unable to find jni.h])] ) ] )
+JAVAHOME="/Library/Java/JavaVirtualMachines/openjdk-11.0.2.jdk/Contents/Home"
 AC_CHECK_FILE(["${JAVAHOME}/include/jni.h"], [
-               AC_MSG_NOTICE([jni.h OK])
                jni=true
                AC_SUBST(JNI_LOC, "${JAVAHOME}/include")
-               AC_SUBST(JNI_LOC_SUB, "${JAVAHOME}/include/linux")
-               ], [
-                   JAVAHOME="/Library/Java/JavaVirtualMachines/openjdk-11.0.2.jdk/Contents/Home"
-                   AC_CHECK_FILE(["${JAVAHOME}/include/jni.h"], [
-                                  AC_MSG_NOTICE([Mac jni.h OK])
-                                  jni=true
-                                  AC_SUBST(JNI_LOC, "${JAVAHOME}/include")
-                                  AC_SUBST(JNI_LOC_SUB, "${JAVAHOME}/include/darwin") ], [
-                                                                                          AC_MSG_NOTICE([unable to find jni.h])] ) ] )
+               AC_SUBST(JNI_LOC_SUB, "${JAVAHOME}/include/darwin") ], [ ])
+JAVAHOME="/usr/lib/jvm/default-java"
+AC_CHECK_FILE(["${JAVAHOME}/include/jni.h"], [
+               jni=true
+               AC_SUBST(JNI_LOC, "${JAVAHOME}/include")
+               AC_SUBST(JNI_LOC_SUB, "${JAVAHOME}/include/linux") ], [ ])
+JAVAHOME="/usr/java/default"
+AC_CHECK_FILE(["${JAVAHOME}/include/jni.h"], [
+               jni=true
+               AC_SUBST(JNI_LOC, "${JAVAHOME}/include")
+               AC_SUBST(JNI_LOC_SUB, "${JAVAHOME}/include/linux") ], [ ])
 
+AS_IF([test "x$jni" = "xtrue"], [ AC_MSG_NOTICE([jni.h OK]) ], [ AC_MSG_NOTICE([unable to find jni.h]) ])
 AM_CONDITIONAL([LIB_JNI], [test "x$jni" = "xtrue"])
 
 # Checks for typedefs, structures, and compiler characteristics.

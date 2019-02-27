@@ -1,4 +1,4 @@
-bin_PROGRAMS = ffmpegEnc ffmpegThumb
+bin_PROGRAMS = ffmpegEnc ffmpegThumb ffmpegThumbAll
 lib_LIBRARIES =
 lib_LTLIBRARIES =
 
@@ -12,6 +12,10 @@ ffmpegEnc_LDADD = -lpthread
 ffmpegThumb_SOURCES = ffmpegThumb.cpp
 ffmpegThumb_SOURCES += ${fencSOURCE}
 ffmpegThumb_LDADD = -lpthread
+
+ffmpegThumbAll_SOURCES = ffmpegThumbAll.cpp
+ffmpegThumbAll_SOURCES += ${fencSOURCE}
+ffmpegThumbAll_LDADD = -lpthread
 
 if LIB_PHPCPP
 lib_LIBRARIES += libphpfenc.a

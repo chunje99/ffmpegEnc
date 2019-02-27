@@ -25,10 +25,10 @@ int Fenc::getProgress(){
 }
 
 int Fenc::getThumbnailTime(){
-    return m_thumbnail_time;
+    return m_thumbnailTime;
 }
-void Fenc::setThumbnailTime(int thumbnail_time){
-    m_thumbnail_time = thumbnail_time;
+void Fenc::setThumbnailTime(int thumbnailTime){
+    m_thumbnailTime = thumbnailTime;
 }
 
 std::string Fenc::getSource(){
@@ -41,18 +41,79 @@ std::string Fenc::getPreset(){
     return m_preset;
 }
 
+void Fenc::setRatio(std::string ratio){
+    m_ratio = ratio;
+}
+std::string Fenc::getRatio(){
+    return m_ratio;
+}
+void Fenc::setBitRate(std::string bitRate){
+    m_bitRate = bitRate;
+}
+std::string Fenc::getBitRate(){
+    return m_bitRate;
+}
+void Fenc::setFileFormat(std::string fileFormat){
+    m_fileFormat = fileFormat;
+}
+std::string Fenc::getFileFormat(){
+    return m_fileFormat;
+}
+void Fenc::setSampleRate(int sampleRate){
+    m_sampleRate = sampleRate;
+}
+int Fenc::getSampleRate(){
+    return m_sampleRate;
+}
+void Fenc::setChannel(int channel){
+    m_channel = channel;
+}
+int Fenc::getChannel(){
+    return m_channel;
+}
+void Fenc::setMute(int mute){
+    m_mute = mute;
+}
+int Fenc::getMute(){
+    return m_mute;
+}
+void Fenc::setNormalize(int normalize){
+    m_normalize = normalize;
+}
+int Fenc::getNormalize(){
+    return m_normalize;
+}
+void Fenc::setFix(int fix){
+    m_fix = fix;
+}
+int Fenc::getFix(){
+    return m_fix;
+}
+void Fenc::setLogo(std::string logo){
+    m_logo = logo;
+}
+std::string Fenc::getLogo(){
+    return m_logo;
+}
+void Fenc::setLogoLocation(std::string logoLocation){
+    m_logoLocation = logoLocation;
+}
+std::string Fenc::getLogoLocation(){
+    return m_logoLocation;
+}
+
 void Fenc::StartEncode(){
-    //m_threads[m_jobcnt] = std::thread(&Fenc::Encode, this);
-    //m_threads.push_back(std::thread(&Fenc::Encode, this));
     m_threadss.emplace_back(std::thread(&Fenc::Encode, this));
     m_jobcnt++;
 }
 
 void Fenc::StartThumbnail(){
-    //m_threads[m_jobcnt] = std::thread(&Fenc::Thumbnail, this);
     m_threadss.emplace_back(std::thread(&Fenc::Thumbnail, this));
-    //m_threads.push_back(std::thread(&Fenc::Thumbnail, this));
-    //m_threads.push_back(std::move(std::thread(&Fenc::Thumbnail, this)));
+    m_jobcnt++;
+}
+
+void Fenc::StartThumbnailAll(){
+    m_threadss.emplace_back(std::thread(&Fenc::ThumbnailAll, this));
     m_jobcnt++;
 }
 
@@ -72,6 +133,7 @@ void Fenc::Wait(){
 
 void Fenc::Encode(){
     std::string processFile = m_outFile + ".process";
+    /*
     if(m_preset == "FHD")
         m_options = " -s 1920x1080 -b:v 4M -b:a 512k ";
     else if(m_preset == "HD")
@@ -80,12 +142,28 @@ void Fenc::Encode(){
         m_options = " -s 720x480 -b:v 1M -b:a 128k ";
     else
         m_options = " -s 1280x720 -b:v 2M -b:a 256k ";
+    */
+    m_options = " -s " + m_ratio;
+    m_options += " -b " + m_bitRate;
+    if(m_mute){
+        m_options += " -an ";
+    } else{
+        m_options += " -ar " + std::to_string(m_sampleRate);
+        m_options += " -ac " + std::to_string(m_channel);
+    }
 
     std::string cmd = "ffmpeg -strict -2 -v verbose -y -i ";
-    cmd += m_srcFile;
-    cmd += m_options;
+    cmd += m_srcFile + " ";
+    if(m_logo != "") {
+        if(m_logoLocation == "TR")
+            cmd += " -i " + m_logo + " -filter_complex \"overlay=(main_w-overlay_w-5):5\" ";
+        else ///center
+            cmd += " -i " + m_logo + " -filter_complex \"overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2\" ";
+    }
+    cmd += m_options + " ";
     cmd += m_outFile;
     cmd += " 2>&1";
+    std::cout << cmd << std::endl;
     FILE* fp = popen(cmd.c_str(), "r");
     if(fp == NULL){
         std::cerr << "popen Error" << std::endl;
@@ -102,7 +180,7 @@ void Fenc::Encode(){
     char buff[BUFF_SIZE+1];
     int c = 0;
     char t;
-    int duration, process;
+    int duration = 0, process = 0;
     m_progress = 0;
     size_t pos;
     int h,m,s,ms;
@@ -110,7 +188,7 @@ void Fenc::Encode(){
         t = fgetc(fp);
         if(t == EOF) break;
         if(t == '\n' || t == '\r') {
-            if((pos = lineStr.find("Duration:")) != std::string::npos){
+            if((pos = lineStr.find("Duration:")) != std::string::npos && duration == 0 ){
                 h=m=s=ms=0;
                 std::string du = lineStr.substr(pos+10,11);
                 sscanf((char*)du.data(), "%02d:%02d:%02d.%02d", &h, &m, &s, &ms);
@@ -203,9 +281,28 @@ void Fenc::Thumbnail(){
     }
     pclose(fp);
 
-    if(m_thumbnail_time < 0)
-        m_thumbnail_time = 0;
-    int ttime = m_thumbnail_time * duration / 100 ;
+    if(m_thumbnailTime < 0)
+        m_thumbnailTime = 0;
+    int ttime = m_thumbnailTime * duration / 100 ;
     GetThumbnail(ttime);
 }
 
+void Fenc::ThumbnailAll(){
+    std::string cmd = "ffmpeg -v verbose -y -i ";
+    cmd += m_srcFile;
+    cmd += " -an -vf fps=fps=1 -qscale:v 2 ";
+    cmd += m_outFile + " ";
+    cmd += " 2>&1";
+    FILE* fp = popen(cmd.c_str(), "r");
+    if(fp == NULL){
+        std::cerr << "popen Error" << std::endl;
+        return ;
+    }
+    char t;
+    while(1){
+        t = fgetc(fp);
+        if(t == EOF) break;
+    }
+    pclose(fp);
+    return ;
+}
