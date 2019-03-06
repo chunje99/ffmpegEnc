@@ -3,8 +3,10 @@
 #include <unistd.h>
 
 Fenc::Fenc()
-    : m_jobcnt(0){
-}
+    : m_jobcnt(0)
+      , m_enc_start(0)
+      , m_enc_end(0)
+{}
 
 Fenc::~Fenc(){
     Wait();
@@ -101,6 +103,18 @@ void Fenc::setLogoLocation(std::string logoLocation){
 std::string Fenc::getLogoLocation(){
     return m_logoLocation;
 }
+void Fenc::setEncStart(int encStart){
+    m_enc_start= encStart;
+}
+int Fenc::getEncStart(){
+    return m_enc_start;
+}
+void Fenc::setEncEnd(int encEnd){
+    m_enc_end = encEnd;
+}
+int Fenc::getEncEnd(){
+    return m_enc_end;
+}
 
 void Fenc::StartEncode(){
     m_threadss.emplace_back(std::thread(&Fenc::Encode, this));
@@ -150,6 +164,19 @@ void Fenc::Encode(){
     } else{
         m_options += " -ar " + std::to_string(m_sampleRate);
         m_options += " -ac " + std::to_string(m_channel);
+    }
+
+    if(m_enc_start > 0){
+        char tbuf[100] = {0};
+        sprintf(tbuf, "%02d:%02d:%02d", m_enc_start/3600, (m_enc_start/60)%60, m_enc_start%60);
+        std::string tStr = tbuf;
+        m_options += " -ss " + tStr;
+    }
+    if(m_enc_end > 0){
+        char tbuf[100] = {0};
+        sprintf(tbuf, "%02d:%02d:%02d", m_enc_end/3600, (m_enc_end/60)%60, m_enc_end%60);
+        std::string tStr = tbuf;
+        m_options += " -to " + tStr;
     }
 
     std::string cmd = "ffmpeg -v verbose -y -i ";

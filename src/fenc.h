@@ -38,6 +38,8 @@ class Fenc
         int m_fix;
         std::string m_logo;
         std::string m_logoLocation;
+        int m_enc_start;
+        int m_enc_end;
 
     public:
         /**
@@ -75,6 +77,10 @@ class Fenc
         std::string getLogo();
         virtual void setLogoLocation(std::string logoLocation);
         std::string getLogoLocation();
+        virtual void setEncStart(int encStart);
+        int getEncStart();
+        virtual void setEncEnd(int encEnd);
+        int getEncEnd();
 
 
         virtual void StartEncode();

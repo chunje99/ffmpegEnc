@@ -12,6 +12,8 @@ int g_normalize = 50;
 int g_fix = 0;
 std::string g_logo = "";
 std::string g_logoLocation = "C";
+int g_enc_start = 0;
+int g_enc_end = 0;
 
 void Usage(){
     std::cout << "Usage     :   ffmpegEnc [options] sourcefile outfile" << std::endl;
@@ -26,6 +28,8 @@ void Usage(){
     std::cout << "  -n  : 노멀라이즈  [ 0~100 ] (" << g_normalize << ")" << std::endl;
     std::cout << "  -l  : 로고  [ path ] (" << g_logo << ")" << std::endl;
     std::cout << "  -L  : 로고 위치 [ C (center), TR (top right)] (" << g_logoLocation << ")" << std::endl;
+    std::cout << "  -S  : 인코딩 시작초 (" << g_enc_start << ")" << std::endl;
+    std::cout << "  -E  : 인코딩 종료초 (" << g_enc_end << ")" << std::endl;
     std::cout << "  -h  : help" << std::endl;
     exit(0);
 }
@@ -33,7 +37,7 @@ void Usage(){
 int main(int argc, char*argv[]){
 
     int opt, remain_opt;
-    while((opt = getopt(argc, argv, "r:b:f:s:c:mxn:l:L:h")) != -1){
+    while((opt = getopt(argc, argv, "r:b:f:s:c:mxn:l:L:hS:E:")) != -1){
         switch(opt){
             case 'r' : /// 화면 비율
                 g_ratio = optarg;
@@ -64,6 +68,11 @@ int main(int argc, char*argv[]){
                 break;
             case 'L' : /// logo location
                 g_logoLocation = optarg;
+                break;
+            case 'S' : /// enc start
+                g_enc_start = atoi(optarg);
+            case 'E' : /// enc end
+                g_enc_end = atoi(optarg);
                 break;
             case 'h' :
             default :
@@ -97,6 +106,8 @@ int main(int argc, char*argv[]){
     fenc.setFix(g_fix);
     fenc.setLogo(g_logo);
     fenc.setLogoLocation(g_logoLocation);
+    fenc.setEncStart(g_enc_start);
+    fenc.setEncEnd(g_enc_end);
 
     fenc.StartEncode();
     return 0;
