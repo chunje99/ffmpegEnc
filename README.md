@@ -39,11 +39,14 @@ options   :
   -m  : 음소거 (0)
   -l  : 로고  [ path ] ()
   -L  : 로고 위치 [ C (center), TR (top right)] (C)
+  -S  : 인코딩 시작초 (0)
+  -E  : 인코딩 종료초 (0)
+
   -h  : help
 ```
  process파일은 outfile.process에 작업상황 표시, 마지막 line 이 최종 progress
  ```
- ex) ./ffmpegEnc -r 1280x720 -b 1000K -l ~/다운로드/temp_1551245232624.-959209158.png -L C ~/다운로드/SampleVideo_1280x720_20mb.mp4 out.mp4
+ ex) ./ffmpegEnc -r 1280x720 -b 1000K -l ~/다운로드/temp_1551245232624.-959209158.png -L C -S 10 -E 20 ~/다운로드/SampleVideo_1280x720_20mb.mp4 out.mp4
 {"Duration": 82}
 0
 2
