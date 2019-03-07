@@ -4,6 +4,7 @@
 
 Fenc::Fenc()
     : m_jobcnt(0)
+      , m_normalize(0)
       , m_enc_start(0)
       , m_enc_end(0)
 {}
@@ -164,6 +165,9 @@ void Fenc::Encode(){
     } else{
         m_options += " -ar " + std::to_string(m_sampleRate);
         m_options += " -ac " + std::to_string(m_channel);
+    }
+    if(m_normalize > 0 && m_normalize <= 100){
+        m_options += " -af dynaudnorm=r=" + std::to_string(m_normalize / 100) + "." + std::to_string((m_normalize%100)/10);
     }
 
     if(m_enc_start > 0){
